@@ -16,16 +16,17 @@ func main() {
 
 	// NewConsoleEncoder
 
-	encoderCfg := zap.NewProductionConfig()
-	encoderCfg.Encoding = "console"
-	encoderCfg.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
-
 	//core := zapcore.NewCore(zapcore.NewConsoleEncoder(encoderCfg.EncoderConfig), os.Stdout, zap.DebugLevel)
 	//logger := zap.New(core)
 
 
 	//zap.NewProduction()
-	//zap.NewExample()
+	zap.NewExample()
+
+	encoderCfg := zap.NewProductionConfig()
+	encoderCfg.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
+	encoderCfg.Encoding = "console"
+	encoderCfg.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
 	logger, _ := encoderCfg.Build() // zap.NewDevelopment() // or NewProduction, or NewDevelopment
 	defer logger.Sync()
 
@@ -45,7 +46,7 @@ func main() {
 	// In the unusual situations where every microsecond matters, use the
 	// Logger. It's even faster than the SugaredLogger, but only supports
 	// structured logging.
-	logger.Info("Failed to fetch URL.",
+	logger.Debug("Failed to fetch URL.",
 		// Structured context as strongly typed fields.
 		zap.String("url", url),
 		zap.Int("attempt", 3),
